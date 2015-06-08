@@ -22,21 +22,23 @@ module Nes
           rom_control_1 = file.read(1).unpack('C')[0]
           rom_control_2 = file.read(1).unpack('C')[0]
           nb_page_ram = file.read(1).unpack('C')[0]
-          reserved = file.read(1).unpack('C')[0]
+          reserved = file.read(7).unpack('C')[0]
           # Read trainer block
           file.read(512) if !(rom_control_1 & ROM_CONTROL_TRAINER).zero?
           
-          prg_roms = Array.new
-          (0...nb_pgr_rom ).each do |i|
-            prg_roms.push(file.read(16384))
-          end
+          # Compute Mapper
+          mapper = (rom_control_2 & ROM_CONTROL_MAPPER_LOWER_MASK) | (rom_control_1 & ROM_CONTROL_MAPPER_LOWER_MASK) > 4
           
-          chr_roms = Array.new
-          (0...nb_chr_rom).each do |i|
-            chr_roms.push(file.read(8192))
-          end
+          # Battery backed RAM
+          battery = !(rom_control_1 & ROM_CONTROL_BATTERY_BACKED_RAM).zero?
           
-          return Cartridge.new(prg_roms,chr_roms)
+          # Read program ROM
+          prg_rom = file.read(nb_pgr_rom * 16384)
+          
+          # Read character ROM          
+          chr_rom = file.read(nb_chr_rom * 8192)
+          
+          return Cartridge.new(prg_rom, chr_rom, mapper, battery)
         end
       end
     end
