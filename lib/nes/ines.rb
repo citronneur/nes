@@ -27,7 +27,7 @@ module Nes
           file.read(512) if !(rom_control_1 & ROM_CONTROL_TRAINER).zero?
           
           # Compute Mapper
-          mapper = (rom_control_2 & ROM_CONTROL_MAPPER_LOWER_MASK) | (rom_control_1 & ROM_CONTROL_MAPPER_LOWER_MASK) > 4
+          mapper = (rom_control_2 & ROM_CONTROL_MAPPER_LOWER_MASK) | ((rom_control_1 & ROM_CONTROL_MAPPER_LOWER_MASK) >> 4)
           
           # Battery backed RAM
           battery = !(rom_control_1 & ROM_CONTROL_BATTERY_BACKED_RAM).zero?
