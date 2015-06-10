@@ -1,5 +1,7 @@
 module Nes
   class Cartridge
+    attr_reader :mapper
+    attr_reader :prg_rom
     # @param prg_roms {String} list of program roms
     # @param chr_roms {String} list character roms
     # @param mapper {Integer} mapper number

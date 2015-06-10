@@ -9,7 +9,7 @@ module Nes
     # @param address {integer} address in memory
     def read(address)
       # Program ROM adress
-      return @mapper.read(address) if address > 0x8000
+      return @mapper.read(address) if address >= 0x8000
     end
   end
 end
