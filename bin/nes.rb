@@ -6,7 +6,5 @@ require 'nes/memory'
 
 cartridge = Nes::INes::load('/home/sylvain/dev/rom/super_mario_bros.nes')
 
-cpu = Nes::CPU.new(Nes::Memory.new(Nes::Mapper::load(cartridge)))
-(0...100).each do
-  cpu.step()
+Nes::CPU.new(Nes::Memory.new(Nes::Mapper::load(cartridge))).run do 
 end
